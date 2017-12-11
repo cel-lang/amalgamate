@@ -13,8 +13,12 @@ solution 	"amalgamate"
 		optimize    "Full"
 
 	filter { "system:macosx", "action:gmake" }
-		buildoptions { "-mmacosx-version-min=10.4" }
-		linkoptions  { "-mmacosx-version-min=10.4" }
+		toolset "clang"
+		buildoptions { "-mmacosx-version-min=10.9", "-stdlib=libc++" }
+		linkoptions  { "-mmacosx-version-min=10.9" }	
+
+	filter { "system:linux" }
+		linkoptions { "-rdynamic -static-libgcc -static-libstdc++" }
 	
 project 	"amalgamate"
 	objdir		"Build/%{cfg.systemarch}"
