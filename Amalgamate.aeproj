@@ -1,0 +1,33 @@
+solution 	"amalgamate"
+	configurations { "Release", "Debug" }
+	flags { "StaticRuntime" }
+	cppdialect "C++11"
+	location ""
+
+	filter "configurations:Debug"
+		warnings 	"Extra"
+		symbols     "On"
+
+	filter "configurations:Release"
+		flags       { "NoBufferSecurityCheck", "NoRuntimeChecks" }
+		optimize    "Full"
+
+	filter { "system:macosx", "action:gmake" }
+		buildoptions { "-mmacosx-version-min=10.4" }
+		linkoptions  { "-mmacosx-version-min=10.4" }
+	
+project 	"amalgamate"
+	objdir		"Build/%{cfg.systemarch}"
+	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
+	kind 		"ConsoleApp"
+
+	files {	
+		"**.cpp",
+		"**.h"
+	}
+
+--	filter "system:windows"
+--		files{ "amalgamate.rc" }
+
+	filter { "configurations:Release" }
+		postbuildcommands{"zip -rj amalgamate-%{cfg.system}.zip Build/%{cfg.systemarch}/Release/amalgamate.exe"}

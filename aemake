@@ -1,0 +1,7 @@
+if [ "$(uname)" == "Darwin" ]; then
+chmod u+x Tools/MacOS/aemake
+Tools/MacOS/aemake $@
+else
+chmod u+x Tools/Linux64/aemake
+Tools/Linux64/aemake $@
+fi
