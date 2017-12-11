@@ -33,5 +33,8 @@ project 	"amalgamate"
 --	filter "system:windows"
 --		files{ "amalgamate.rc" }
 
+	filter "system:linux"
+		links{"dl","pthreads"}
+
 	filter { "configurations:Release" }
 		postbuildcommands{"zip -rj amalgamate-%{cfg.system}.zip Build/%{cfg.systemarch}/Release/amalgamate.exe"}
