@@ -30,11 +30,12 @@ project 	"amalgamate"
 		"**.h"
 	}
 
---	filter "system:windows"
---		files{ "amalgamate.rc" }
-
 	filter "system:linux"
 		links{"dl","pthread"}
 
-	filter { "configurations:Release" }
+	filter {  "system:windows", "configurations:Release" }
+	--	files{ "amalgamate.rc" }
 		postbuildcommands{"zip -rj amalgamate-%{cfg.system}.zip Build/%{cfg.systemarch}/Release/amalgamate.exe"}
+
+	filter {  "configurations:Release" }
+		postbuildcommands{"zip -rj amalgamate-%{cfg.system}.zip Build/%{cfg.systemarch}/Release/amalgamate"}
