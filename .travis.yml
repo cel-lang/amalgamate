@@ -22,9 +22,6 @@ script:
  - ./aemake gmake 
  - make config=release
 
-after_success:
- - ./aemake package
-
 notifications:
  email: false
 

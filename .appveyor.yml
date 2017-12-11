@@ -10,8 +10,7 @@ install:
  - aemake vs2015
 
 build_script:
-  - cmd: msbuild Cel.sln
-  - cmd: aemake package
+  - cmd: msbuild amalgamate.sln /p:configuration=release
 
 artifacts:
   - path: "*.zip"
