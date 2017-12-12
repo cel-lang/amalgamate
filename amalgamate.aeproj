@@ -7,10 +7,12 @@ solution 	"amalgamate"
 	filter "configurations:Debug"
 		warnings 	"Extra"
 		symbols     "On"
+		defines {"DEBUG"}
 
 	filter "configurations:Release"
 		flags       { "NoBufferSecurityCheck", "NoRuntimeChecks" }
 		optimize    "Full"
+		defines    {"NDEBUG"}
 
 	filter { "system:macosx", "action:gmake" }
 		toolset "clang"
@@ -24,12 +26,27 @@ project 	"amalgamate"
 	objdir		"Build/%{cfg.systemarch}"
 	targetdir	"%{cfg.objdir}/%{cfg.buildcfg}"
 	kind 		"ConsoleApp"
+	language    "C++"
 
 	files {	
-		"**.cpp",
+		"Amalgamate.cpp",
 		"**.h"
 	}
 
+	filter {  "system:macosx" }
+		links 
+		{ 
+			"Carbon.framework", 
+			"Cocoa.framework",
+			"CoreServices.framework",
+			"Foundation.framework", 
+			"IOKit.framework",
+			"QuartzCore.framework"
+		}
+		files {	"**.mm" }
+
+	filter "system:windows or linux"
+		files {	"juce_core_amalgam.cpp" }
 	filter "system:linux"
 		links{"dl","pthread"}
 
@@ -37,5 +54,5 @@ project 	"amalgamate"
 	--	files{ "amalgamate.rc" }
 		postbuildcommands{"zip -rj amalgamate-%{cfg.system}.zip Build/%{cfg.systemarch}/Release/amalgamate.exe"}
 
-	filter {  "configurations:Release" }
+	filter {  "system:macosx or linux", "configurations:Release" }
 		postbuildcommands{"zip -rj amalgamate-%{cfg.system}.zip Build/%{cfg.systemarch}/Release/amalgamate"}
